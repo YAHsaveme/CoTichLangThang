@@ -1,0 +1,28 @@
+{
+  "name": "cotichlangthang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YAHsaveme/CoTichLangThang.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YAHsaveme/CoTichLangThang/issues"
+  },
+  "homepage": "https://github.com/YAHsaveme/CoTichLangThang#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mssql": "^11.0.1",
+    "multer": "^2.0.1",
+    "uuid": "^11.1.0"
+  }
+}

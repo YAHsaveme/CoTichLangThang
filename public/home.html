@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=3.0">
+    <title>Cổ Tích Lang Thang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            background: linear-gradient(135deg, #f4f1e8 0%, #e8dcc0 50%, #d4c4a0 100%);
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(205, 133, 63, 0.1) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4c4a0' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='m0 40l40-40h-40v40zm40 0v-40h-40l40 40z'/%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Vintage paper texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(139, 123, 96, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(160, 134, 98, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Main scroll container */
+        .parchment-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 15px;
+            position: relative;
+        }
+
+        /* Ornate border frame */
+        .ornate-frame {
+            background: linear-gradient(135deg, #f8f5ec 0%, #ede4d0 100%);
+            border: 2px solid #8b7b60;
+            border-radius: 15px;
+            position: relative;
+            padding: 20px;
+            box-shadow: 
+                0 0 20px rgba(139, 123, 96, 0.3),
+                inset 0 0 15px rgba(218, 165, 32, 0.1);
+        }
+
+        /* Corner decorations - Hidden on mobile */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%238b7b60' stroke='%238b7b60' stroke-width='1'%3E%3Cpath d='M10,10 Q30,5 50,10 Q70,15 90,10 Q85,30 90,50 Q85,70 90,90 Q70,85 50,90 Q30,85 10,90 Q15,70 10,50 Q15,30 10,10 Z' fill='none'/%3E%3Ccircle cx='20' cy='20' r='3'/%3E%3Ccircle cx='30' cy='15' r='2'/%3E%3Ccircle cx='40' cy='12' r='2'/%3E%3Cpath d='M15,25 Q25,20 35,25' fill='none'/%3E%3Cpath d='M12,35 Q20,30 28,35' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: none;
+        }
+
+        .corner-top-left {
+            top: 10px;
+            left: 10px;
+        }
+
+        .corner-top-right {
+            top: 10px;
+            right: 10px;
+            transform: rotate(90deg);
+        }
+
+        .corner-bottom-left {
+            bottom: 10px;
+            left: 10px;
+            transform: rotate(-90deg);
+        }
+
+        .corner-bottom-right {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(180deg);
+        }
+
+        /* Scroll banner */
+        .scroll-banner {
+            position: relative;
+            margin: 30px auto;
+            width: 100%;
+            max-width: 600px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Scroll background */
+        .scroll-bg {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #faf8f0 0%, #f0ebe0 100%);
+            border: 2px solid #8b7b60;
+            border-radius: 15px;
+            box-shadow: 
+                0 6px 20px rgba(139, 123, 96, 0.4),
+                inset 0 2px 8px rgba(218, 165, 32, 0.2);
+        }
+
+        /* Scroll ends (rolled paper effect) */
+        .scroll-end {
+            position: absolute;
+            width: 30px;
+            height: 80px;
+            background: linear-gradient(90deg, #e8dcc0 0%, #d4c4a0 50%, #c9b896 100%);
+            border: 2px solid #8b7b60;
+            border-radius: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 3px 12px rgba(139, 123, 96, 0.3);
+        }
+
+        .scroll-end::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 65px;
+            background: linear-gradient(90deg, #f0ebe0 0%, #e8dcc0 100%);
+            border-radius: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .scroll-left {
+            left: -15px;
+        }
+
+        .scroll-right {
+            right: -15px;
+        }
+
+        /* Decorative flourishes on scroll */
+        .scroll-flourish {
+            position: absolute;
+            color: #8b7b60;
+            font-size: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .flourish-left {
+            left: 60px;
+        }
+
+        .flourish-right {
+            right: 60px;
+        }
+
+        /* Main title */
+        .main-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #5d4e37;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(139, 123, 96, 0.3);
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        /* Butterflies */
+        .butterfly {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #8b7b60;
+            animation: flutter 4s ease-in-out infinite;
+            z-index: 15;
+        }
+
+        .butterfly-1 {
+            right: 80px;
+            top: 20px;
+            animation-delay: 0s;
+        }
+
+        .butterfly-2 {
+            left: 80px;
+            top: 50px;
+            animation-delay: 2s;
+        }
+
+        @keyframes flutter {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.8;
+            }
+            25% { 
+                transform: translateY(-8px) rotate(5deg);
+                opacity: 1;
+            }
+            50% { 
+                transform: translateY(-4px) rotate(-3deg);
+                opacity: 0.9;
+            }
+            75% { 
+                transform: translateY(-12px) rotate(7deg);
+                opacity: 1;
+            }
+        }
+
+        /* Navigation */
+        .vintage-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            font-family: 'Cinzel', serif;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f8f5ec 0%, #ede4d0 100%);
+            border: 2px solid #8b7b60;
+            border-radius: 20px;
+            color: #5d4e37;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(139, 123, 96, 0.2);
+            font-size: 0.9rem;
+            text-align: center;
+            min-width: 120px;
+            touch-action: manipulation;
+        }
+
+        .nav-item:hover, .nav-item:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 123, 96, 0.3);
+            background: linear-gradient(135deg, #faf8f0 0%, #f0ebe0 100%);
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-item:hover::before {
+            left: 100%;
+        }
+
+        /* Content sections */
+        .content-section {
+            background: linear-gradient(135deg, #faf8f0 0%, #f0ebe0 100%);
+            border: 2px solid #c9b896;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 6px 20px rgba(139, 123, 96, 0.2);
+            position: relative;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b7b60, #daa520, #8b7b60);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .section-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2rem;
+            color: #5d4e37;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .section-title::after {
+            content: '❦';
+            display: block;
+            font-size: 1.2rem;
+            color: #8b7b60;
+            margin-top: 8px;
+        }
+
+        /* Story grid */
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, #f8f5ec 0%, #ede4d0 100%);
+            border: 2px solid #c9b896;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(139, 123, 96, 0.15);
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .story-card:hover, .story-card:active {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 123, 96, 0.25);
+            background: linear-gradient(135deg, #faf8f0 0%, #f0ebe0 100%);
+        }
+
+        .story-emoji {
+            font-size: 2.5rem;
+            margin: 0 auto 12px;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+            filter: sepia(20%) saturate(80%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .story-card:hover .story-emoji {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .story-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #5d4e37;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .story-description {
+            font-size: 0.9rem;
+            color: #6d5d47;
+            line-height: 1.6;
+            font-style: italic;
+            max-height: 3.6em;           /* tối đa 2 dòng */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .story-views {
+    font-size: 0.85rem;
+    color: #a0845c;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+        /* Welcome text */
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #6d5d47;
+            text-align: center;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        /* Upload section */
+        .upload-section {
+            text-align: center;
+            padding: 30px 25px;
+            background: linear-gradient(135deg, #f0ebe0 0%, #e8dcc0 100%);
+            border: 3px dashed #8b7b60;
+            border-radius: 15px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .upload-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8rem;
+            color: #5d4e37;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .upload-btn {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
+            border: 2px solid #8b7b60;
+            padding: 15px 30px;
+            border-radius: 20px;
+            color: #2f1b14;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            touch-action: manipulation;
+            min-height: 48px;
+        }
+
+        .upload-btn:hover, .upload-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(218, 165, 32, 0.4);
+            background: linear-gradient(135deg, #f4d03f 0%, #daa520 100%);
+        }
+
+        .btn-upload-media {
+  font-family: 'Cinzel', serif;
+  background: linear-gradient(135deg, #f5e9c9, #e8dcc0);
+  color: #5d4e37;
+  padding: 12px 28px;
+  border: 2px dashed #c9b896;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px #fff8e1;
+  cursor: pointer;
+}
+
+.btn-upload-media:hover {
+  background: linear-gradient(135deg, #fff8e1, #f0e6ca);
+  border-color: #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(139, 115, 85, 0.3);
+}
+
+.btn-submit-comment {
+  font-family: 'Cinzel Decorative', serif;
+  background: linear-gradient(45deg, #d4af37, #a0845c);
+  color: #fffaf0;
+  padding: 12px 30px;
+  border: 2px solid #8b7355;
+  border-radius: 25px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-submit-comment:hover {
+  background: linear-gradient(45deg, #f1c766, #b08853);
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 115, 85, 0.4);
+}
+
+#commentEditor img, #commentEditor video {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 5px 0;
+}
+
+.comment-media-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.comment-media-grid img,
+.comment-media-grid video {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.comment-media-grid img:hover,
+.comment-media-grid video:hover {
+  transform: scale(1.05);
+}
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #6d5d47;
+            background: linear-gradient(135deg, #e8dcc0 0%, #d4c4a0 100%);
+            border-top: 2px solid #8b7b60;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .corner-decoration {
+                display: block;
+            }
+            
+            .parchment-container {
+                margin: 40px auto;
+                padding: 20px;
+            }
+            
+            .ornate-frame {
+                padding: 40px;
+            }
+            
+            .main-title {
+                font-size: 3.2rem;
+                letter-spacing: 3px;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .vintage-nav {
+                gap: 30px;
+            }
+            
+            .nav-item {
+                font-size: 1rem;
+                padding: 12px 25px;
+                min-width: auto;
+            }
+            
+            .scroll-banner {
+                height: 180px;
+                margin: 50px auto;
+            }
+            
+            .scroll-bg {
+                height: 130px;
+            }
+            
+            .scroll-end {
+                width: 35px;
+                height: 100px;
+            }
+            
+            .scroll-flourish {
+                font-size: 1.8rem;
+            }
+            
+            .butterfly {
+                font-size: 2rem;
+            }
+            
+            .content-section {
+                padding: 40px;
+                margin: 30px 0;
+            }
+            
+            .story-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 25px;
+            }
+            
+            .story-emoji {
+                font-size: 3.5rem;
+            }
+            
+            .story-title {
+                font-size: 1.6rem;
+            }
+            
+            .welcome-text {
+                font-size: 1.2rem;
+            }
+            
+            .upload-section {
+                padding: 50px 40px;
+            }
+            
+            .upload-title {
+                font-size: 2.2rem;
+            }
+            
+            .upload-btn {
+                font-size: 1.1rem;
+                padding: 15px 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .parchment-container {
+                margin: 10px auto;
+                padding: 10px;
+            }
+            
+            .ornate-frame {
+                padding: 15px;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .vintage-nav {
+                gap: 10px;
+            }
+            
+            .nav-item {
+                font-size: 0.8rem;
+                padding: 10px 15px;
+                min-width: 100px;
+            }
+            
+            .scroll-banner {
+                height: 120px;
+                margin: 20px auto;
+            }
+            
+            .scroll-bg {
+                height: 80px;
+            }
+            
+            .scroll-end {
+                width: 25px;
+                height: 60px;
+            }
+            
+            .scroll-left {
+                left: -12px;
+            }
+            
+            .scroll-right {
+                right: -12px;
+            }
+            
+            .flourish-left {
+                left: 45px;
+            }
+            
+            .flourish-right {
+                right: 45px;
+            }
+            
+            .scroll-flourish {
+                font-size: 1.2rem;
+            }
+            
+            .butterfly {
+                font-size: 1.2rem;
+            }
+            
+            .butterfly-1 {
+                right: 60px;
+                top: 15px;
+            }
+            
+            .butterfly-2 {
+                left: 60px;
+                top: 40px;
+            }
+            
+            .content-section {
+                padding: 20px;
+                margin: 20px 0;
+            }
+            
+            .welcome-text {
+                font-size: 1rem;
+            }
+            
+            .story-title {
+                font-size: 1.2rem;
+            }
+            
+            .story-description {
+                font-size: 0.85rem;
+            }
+            
+            .upload-section {
+                padding: 25px 20px;
+            }
+            
+            .upload-title {
+                font-size: 1.5rem;
+            }
+            
+            .upload-btn {
+                font-size: 0.9rem;
+                padding: 12px 25px;
+            }
+            
+            .footer {
+                padding: 25px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-item, .story-card, .upload-btn {
+                -webkit-tap-highlight-color: rgba(218, 165, 32, 0.3);
+            }
+            
+            .nav-item:active, .story-card:active, .upload-btn:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .butterfly {
+                animation: none;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .nav-item, .story-card, .content-section, .upload-section {
+                border-width: 3px;
+            }
+            
+            .main-title, .section-title, .story-title {
+                text-shadow: none;
+                font-weight: 700;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="parchment-container">
+        <div class="ornate-frame">
+            <!-- Corner decorations -->
+            <div class="corner-decoration corner-top-left"></div>
+            <div class="corner-decoration corner-top-right"></div>
+            <div class="corner-decoration corner-bottom-left"></div>
+            <div class="corner-decoration corner-bottom-right"></div>
+
+            <!-- Main scroll banner -->
+            <div class="scroll-banner">
+                <!-- Scroll background -->
+                <div class="scroll-bg"></div>
+                
+                <!-- Scroll ends -->
+                <div class="scroll-end scroll-left"></div>
+                <div class="scroll-end scroll-right"></div>
+                
+                <!-- Decorative flourishes -->
+                <div class="scroll-flourish flourish-left">❦</div>
+                <div class="scroll-flourish flourish-right">❦</div>
+                
+                <!-- Butterflies -->
+                <div class="butterfly butterfly-1">🦋</div>
+                <div class="butterfly butterfly-2">🦋</div>
+                
+                <!-- Main title -->
+                <h1 class="main-title">Cổ Tích Lang Thang</h1>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="vintage-nav" role="navigation" aria-label="Menu chính">
+                <a href="#home" class="nav-item" aria-label="Trang chủ">🏠 Trang Chủ</a>
+                <a href="#stories" class="nav-item" aria-label="Truyện cổ tích">📚 Truyện Cổ Tích</a>
+                <a href="#characters" class="nav-item" aria-label="Nhân vật">👑 Nhân Vật</a>
+                <a href="#upload" class="nav-item" aria-label="Đăng truyện">✍️ Đăng Truyện</a>
+                <a href="#about" class="nav-item" aria-label="Giới thiệu">💫 Giới Thiệu</a>
+            </nav>
+
+            <!-- Welcome Section -->
+            <section class="content-section" id="home">
+                <h2 class="section-title">Chào Mừng Đến Với Thế Giới Cổ Tích</h2>
+                <p class="welcome-text">
+                    Nơi đây là kho tàng những câu chuyện cổ tích tuyệt vời với những nhân vật đáng yêu, 
+                    những bài học ý nghĩa và những hình ảnh sinh động. Hãy cùng khám phá thế giới kỳ diệu 
+                    nơi mọi giấc mơ đều có thể trở thành hiện thực!
+                </p>
+            </section>
+
+            <!-- Stories Section -->
+            <section class="content-section" id="stories">
+                <h2 class="section-title">Những Câu Chuyện Nổi Bật</h2>
+                <div class="story-grid">
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Công Chúa Tóc Mây">
+                        <span class="story-emoji" aria-hidden="true">👸</span>
+                        <h3 class="story-title">Công Chúa Tóc Mây</h3>
+                        <p class="story-description">Câu chuyện về nàng công chúa với mái tóc dài óng ả và cuộc phiêu lưu tìm kiếm tự do trong thế giới rộng lớn...</p>
+                    </article>
+                    
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Hoàng Tử Ếch">
+                        <span class="story-emoji" aria-hidden="true">🐸</span>
+                        <h3 class="story-title">Hoàng Tử Ếch</h3>
+                        <p class="story-description">Chuyện tình yêu kỳ diệu giữa công chúa và chú ếch biết nói, bài học về lòng thành thật và sự kiên nhẫn...</p>
+                    </article>
+                    
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Lâu Đài Ngủ Quên">
+                        <span class="story-emoji" aria-hidden="true">🏰</span>
+                        <h3 class="story-title">Lâu Đài Ngủ Quên</h3>
+                        <p class="story-description">Hành trình khám phá bí mật của lâu đài bị lời nguyền và nàng công chúa ngủ trăm năm chờ đợi tình yêu đích thực...</p>
+                    </article>
+                    
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Nàng Tiên Bướm">
+                        <span class="story-emoji" aria-hidden="true">🦋</span>
+                        <h3 class="story-title">Nàng Tiên Bướm</h3>
+                        <p class="story-description">Cuộc phiêu lưu của nàng tiên nhỏ bé với đôi cánh bướm lung linh trong khu rừng thần tiên đầy màu sắc...</p>
+                    </article>
+                    
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Ngôi Sao Ước Nguyện">
+                        <span class="story-emoji" aria-hidden="true">🌟</span>
+                        <h3 class="story-title">Ngôi Sao Ước Nguyện</h3>
+                        <p class="story-description">Câu chuyện về cậu bé dũng cảm tìm kiếm ngôi sao ước nguyện để cứu ngôi làng khỏi lời nguyền hắc ám...</p>
+                    </article>
+                    
+                    <article class="story-card" tabindex="0" role="button" aria-label="Đọc truyện Kỳ Lân Trắng">
+                        <span class="story-emoji" aria-hidden="true">🦄</span>
+                        <h3 class="story-title">Kỳ Lân Trắng</h3>
+                        <p class="story-description">Hành trình tìm kiếm chú kỳ lân trắng huyền thoại và những phép màu không thể tin được trong rừng sâu...</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section class="upload-section" id="upload">
+                <h2 class="upload-title">Chia Sẻ Câu Chuyện Của Bạn</h2>
+                <p style="margin-bottom: 20px; font-size: 1rem; color: #6d5d47; font-style: italic;">
+                    Bạn có một câu chuyện cổ tích tuyệt vời? Hãy chia sẻ với chúng tôi!
+                </p>
+                <button class="upload-btn" onclick="window.location.href='create.html'" aria-label="Đăng tải truyện mới">
+                    Đăng Tải Truyện Mới
+                </button>
+            </section>
+        </div>
+    </div>
+    <!-- Comment Section -->
+<section class="content-section" id="comments">
+  <h2 class="section-title">Bình Luận Từ Người Dùng</h2>
+
+  <!-- Form nhập bình luận -->
+  <div style="margin-bottom: 30px;">
+  <label style="font-weight: bold; color: #5d4e37;">🖼️ Cập nhật avatar của bạn:</label><br>
+  <input type="file" id="avatarUpload" accept="image/*" style="margin: 8px 0 15px;"><br>
+
+  <input id="commentName" type="text" placeholder="Tên của bạn"
+         style="padding: 10px; width: 100%; margin-bottom: 8px; border-radius: 8px; border: 1px solid #c9b896;">
+
+  <label style="font-weight: bold; color: #5d4e37;">💬 Bình luận:</label>
+  <div id="commentEditor" contenteditable="true"
+       style="min-height: 120px; padding: 10px; border: 2px solid #c9b896; border-radius: 8px; background: #fffef9;"
+       ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+  </div>
+
+  <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+    <button onclick="submitComment()" class="btn-submit-comment">📣 Gửi bình luận</button>
+  </div>
+</div>
+
+  <!-- Danh sách bình luận -->
+  <div id="commentList"></div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Cổ Tích Lang Thang | Nơi lưu giữ những giấc mơ đẹp nhất ❦</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Upload story function
+        function uploadStory() {
+            alert('Tính năng đăng tải truyện sẽ được phát triển trong phiên bản tới! 📚✨');
+        }
+
+        // Enhanced story card interactions
+        document.querySelectorAll('.story-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            // Mouse events
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+                const emoji = this.querySelector('.story-emoji');
+                if (emoji) {
+                    emoji.style.transform = 'scale(1.15) rotate(5deg)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                const emoji = this.querySelector('.story-emoji');
+                if (emoji) {
+                    emoji.style.transform = 'scale(1) rotate(0deg)';
+                }
+            });
+
+            // Touch events for mobile
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'translateY(-3px) scale(1.01)';
+            });
+
+            card.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.transform = 'translateY(0) scale(1)';
+                }, 150);
+            });
+
+            // Keyboard navigation
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+
+            // Click handler for story cards
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.story-title').textContent;
+                alert(`Sẽ mở truyện: "${title}" trong phiên bản tới! 📖✨`);
+            });
+        });
+
+        // Butterfly animation enhancement
+        function createButterfly() {
+            const butterflies = document.querySelectorAll('.butterfly');
+            butterflies.forEach(butterfly => {
+                // Respect reduced motion preference
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    return;
+                }
+                
+                setInterval(() => {
+                    const randomX = Math.random() * 15 - 7.5;
+                    const randomY = Math.random() * 15 - 7.5;
+                    butterfly.style.transform += ` translate(${randomX}px, ${randomY}px)`;
+                    
+                    setTimeout(() => {
+                        butterfly.style.transform = butterfly.style.transform.replace(/translate\([^)]*\)/g, '');
+                    }, 1500);
+                }, 4000);
+            });
+        }
+
+        // Initialize butterfly animations
+        createButterfly();
+
+        // Scroll-triggered animations with Intersection Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -30px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all content sections
+        document.querySelectorAll('.content-section, .story-card').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Throttled scroll handler for performance
+        let ticking = false;
+        function updateScrollEffects() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.3;
+            
+            // Only apply parallax on larger screens
+            if (window.innerWidth > 768) {
+                document.querySelectorAll('.corner-decoration').forEach(decoration => {
+                    decoration.style.transform += ` translateY(${rate * 0.05}px)`;
+                });
+            }
+            
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollEffects);
+                ticking = true;
+            }
+        });
+
+        // Navigation active state
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.content-section');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Touch feedback for interactive elements
+        const touchElements = document.querySelectorAll('.nav-item, .story-card, .upload-btn');
+        touchElements.forEach(element => {
+            element.addEventListener('touchstart', function() {
+                this.style.opacity = '0.8';
+            });
+            
+            element.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 100);
+            });
+        });
+
+        // Accessibility improvements
+        // Focus trap for keyboard navigation
+        const focusableElements = document.querySelectorAll(
+            'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select, [tabindex]:not([tabindex="-1"])'
+        );
+
+        // Add focus styles
+        focusableElements.forEach(element => {
+            element.addEventListener('focus', function() {
+                this.style.outline = '3px solid #daa520';
+                this.style.outlineOffset = '2px';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.style.outline = 'none';
+            });
+        });
+
+        // Responsive font size adjustment
+        function adjustFontSizes() {
+            const screenWidth = window.innerWidth;
+            const root = document.documentElement;
+            
+            if (screenWidth < 480) {
+                root.style.fontSize = '14px';
+            } else if (screenWidth < 768) {
+                root.style.fontSize = '15px';
+            } else {
+                root.style.fontSize = '16px';
+            }
+        }
+
+        // Call on load and resize
+        adjustFontSizes();
+        window.addEventListener('resize', adjustFontSizes);
+
+        // Prevent zoom on iOS input focus
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    document.querySelector('meta[name="viewport"]').setAttribute(
+                        'content', 
+                        'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+                    );
+                });
+                
+                input.addEventListener('blur', function() {
+                    document.querySelector('meta[name="viewport"]').setAttribute(
+                        'content', 
+                        'width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=3.0'
+                    );
+                });
+            });
+        }
+
+        // Performance optimization: Disable animations on low-end devices
+        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+            document.body.classList.add('low-performance');
+            // Add CSS for low-performance class to disable heavy animations
+            const style = document.createElement('style');
+            style.textContent = `
+                .low-performance .butterfly {
+                    animation: none !important;
+                }
+                .low-performance * {
+                    transition-duration: 0.1s !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Service Worker registration for offline capability (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Uncomment to enable service worker
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
+
+        // Print styles optimization
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.butterfly, .corner-decoration').forEach(el => {
+                el.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.butterfly, .corner-decoration').forEach(el => {
+                el.style.display = '';
+            });
+        });
+
+        // Error handling for images and fonts
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if custom fonts loaded
+            if (document.fonts) {
+                document.fonts.ready.then(() => {
+                    document.body.classList.add('fonts-loaded');
+                });
+            }
+        });
+
+        // Add loading spinner functionality
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            // Remove any loading overlays
+            const loader = document.querySelector('.loading-overlay');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 300);
+            }
+        });
+
+        async function renderStories() {
+  const grid = document.querySelector('.story-grid');
+  grid.innerHTML = '';
+
+  try {
+    const res = await fetch('/api/stories');
+    const stories = await res.json();
+
+    stories.forEach(story => {
+      const card = document.createElement('article');
+      card.className = 'story-card';
+      card.tabIndex = 0;
+
+      const description = stripHTML(story.content).slice(0, 150);
+
+      card.innerHTML = `
+        ${story.iconPath 
+          ? `<img src="${story.iconPath}" alt="icon" class="story-icon">` 
+          : `<span class="story-emoji">📖</span>`}
+        <h3 class="story-title">${story.title}</h3>
+        <p class="story-description">${description}...</p>
+        <p class="story-views">👁️ ${story.views || 0} lượt xem</p>
+      `;
+
+      card.addEventListener('click', () => {
+        localStorage.setItem('selectedStoryId', story.id);
+        window.location.href = 'view.html';
+      });
+
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    grid.innerHTML = `<p style="color:red;text-align:center;">❌ Không thể tải truyện từ server.</p>`;
+    console.error(err);
+  }
+}
+
+function stripHTML(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+}
+
+document.addEventListener('DOMContentLoaded', renderStories);
+
+function editStory(id) {
+    const stories = JSON.parse(localStorage.getItem('stories') || '[]');
+    const story = stories.find(s => s.id === id);
+    localStorage.setItem('editStoryId', id);
+    localStorage.setItem('selectedStoryId', story.id);
+    window.location.href = 'create.html';
+}
+
+function deleteStory(id) {
+    if (!confirm('Bạn có chắc muốn xóa truyện này?')) return;
+    let stories = JSON.parse(localStorage.getItem('stories') || '[]');
+    stories = stories.filter(s => s.id !== id);
+    localStorage.setItem('stories', JSON.stringify(stories));
+    renderStories();
+}
+
+function submitComment() {
+  const name = document.getElementById('commentName').value.trim();
+  const content = document.getElementById('commentEditor').innerHTML.trim();
+  const avatarFile = document.getElementById('avatarUpload').files[0];
+
+  if (!name || !content) {
+    alert("⚠️ Vui lòng nhập tên và nội dung!");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("content", content);
+  if (avatarFile) formData.append("avatar", avatarFile);
+
+  fetch("/api/comments", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("commentEditor").innerHTML = '';
+        document.getElementById("commentName").value = '';
+        document.getElementById("avatarUpload").value = '';
+        renderComments(); // gọi lại để hiển thị mới
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Gửi bình luận thất bại!");
+    });
+}
+
+function renderComments() {
+  fetch("/api/comments")
+    .then(res => res.json())
+    .then(comments => {
+      const list = document.getElementById("commentList");
+      list.innerHTML = comments.map(c => `
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; background: #fefcf8; border: 1px dashed #c9b896; padding: 10px; border-radius: 10px;">
+          <img src="${c.avatarPath || 'https://i.imgur.com/6VBx3io.png'}" alt="avatar"
+               style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+          <div style="flex: 1;">
+            <strong style="color: #5d4e37;">${c.name}</strong>
+            <div style="margin: 5px 0;">${c.content}</div>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(err => {
+      console.error(err);
+      alert("❌ Lỗi khi tải bình luận.");
+    });
+}
+
+document.addEventListener('DOMContentLoaded', renderComments);
+
+function deleteComment(id) {
+  if (confirm("Bạn có chắc muốn xóa bình luận này không?")) {
+    let comments = JSON.parse(localStorage.getItem('comments') || '[]');
+    comments = comments.filter(c => c.id !== id);
+    localStorage.setItem('comments', JSON.stringify(comments));
+    renderComments();
+  }
+}
+
+function editComment(id) {
+  const currentContent = document.getElementById(`cmt-${id}`).innerHTML;
+  const updated = prompt("Chỉnh sửa nội dung:", currentContent);
+  if (updated !== null) {
+    let comments = JSON.parse(localStorage.getItem('comments') || '[]');
+    const index = comments.findIndex(c => c.id === id);
+    if (index !== -1) {
+      comments[index].content = updated;
+      localStorage.setItem('comments', JSON.stringify(comments));
+      renderComments();
+    }
+  }
+}
+
+// Kéo & thả media vào khung editor
+function handleDrop(e) {
+  e.preventDefault();
+  const editor = document.getElementById('commentEditor');
+
+  // Nếu chưa có gallery thì tạo
+  let gallery = editor.querySelector('.comment-media-grid');
+  if (!gallery) {
+    gallery = document.createElement('div');
+    gallery.className = 'comment-media-grid';
+    editor.appendChild(gallery);
+  }
+
+  for (const file of e.dataTransfer.files) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (file.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.src = reader.result;
+        gallery.appendChild(img);
+      } else if (file.type.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.src = reader.result;
+        video.controls = true;
+        gallery.appendChild(video);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+
+// Dán ảnh từ clipboard
+document.getElementById('commentEditor').addEventListener('paste', (e) => {
+  const editor = document.getElementById('commentEditor');
+
+  // Tìm hoặc tạo gallery
+  let gallery = editor.querySelector('.comment-media-grid');
+  if (!gallery) {
+    gallery = document.createElement('div');
+    gallery.className = 'comment-media-grid';
+    editor.appendChild(gallery);
+  }
+
+  for (const item of e.clipboardData.items) {
+    if (item.kind === 'file') {
+      const file = item.getAsFile();
+      const reader = new FileReader();
+
+      reader.onload = ev => {
+        if (file.type.startsWith("image/")) {
+          const img = document.createElement('img');
+          img.src = ev.target.result;
+          gallery.appendChild(img);
+        } else if (file.type.startsWith("video/")) {
+          const video = document.createElement('video');
+          video.src = ev.target.result;
+          video.controls = true;
+          gallery.appendChild(video);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', renderComments);
+
+window.addEventListener('DOMContentLoaded', () => {
+    const storyGrid = document.querySelector('.story-grid');
+    const stories = JSON.parse(localStorage.getItem("stories") || "[]");
+
+    if (!stories.length) return;
+
+    storyGrid.innerHTML = stories.map(story => `
+        <article class="story-card" onclick="viewStory(${story.id})">
+            ${story.icon ? `<img src="${story.icon}" class="story-emoji" alt="icon">` : `<span class="story-emoji">📘</span>`}
+            <h3 class="story-title">${story.title}</h3>
+            <p class="story-description">${stripHTML(story.content).slice(0, 100)}...</p>
+        </article>
+    `).join('');
+});
+
+function stripHTML(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+}
+
+
+function viewStory(id) {
+    const stories = JSON.parse(localStorage.getItem("stories") || "[]");
+    const story = stories.find(s => s.id === id);
+    if (!story) return alert("Không tìm thấy truyện!");
+    localStorage.setItem("selectedStoryId", story.id);
+    window.location.href = "view.html";
+}
+
+function stripHTML(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+}
+    </script>
+</body>
+</html>
+
