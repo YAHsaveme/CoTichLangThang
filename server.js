@@ -65,7 +65,7 @@ app.get("/api/stories", async (req, res) => {
 });
 
 // POST đăng truyện mới
-    app.post("/api/stories", upload.none(), async (req, res) => {
+    app.post("/api/stories", upload.single("icon"), async (req, res) => {
   try {
     console.log("body:", req.body); // debug
 

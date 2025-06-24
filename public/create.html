@@ -670,43 +670,6 @@ if (editId) {
             document.execCommand('foreColor', false, color);
         }
 
-        function previewStory() {
-            const title = document.getElementById('storyTitle').value;
-            const category = document.getElementById('storyCategory').value;
-            const content = document.getElementById('storyEditor').innerHTML;
-
-            if (!title.trim()) {
-                alert('⚠️ Vui lòng nhập tiêu đề truyện!');
-                return;
-            }
-
-            const categoryNames = {
-                'fairy-tale': '🧚‍♀️ Cổ tích truyền thống',
-                'fantasy': '🔮 Thần thoại',
-                'adventure': '⚔️ Phiêu lưu',
-                'moral': '📚 Giáo dục đạo đức',
-                'animal': '🐾 Truyện động vật',
-                'modern': '🌟 Cổ tích hiện đại'
-            };
-
-            const modal = document.createElement('div');
-            modal.className = 'preview-modal';
-            modal.innerHTML = `
-                <div class="preview-content">
-                    <div class="preview-header">
-                        <h2>👁️ Xem trước truyện</h2>
-                        <button class="close-btn" onclick="this.closest('.preview-modal').remove()">✕</button>
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <h1 style="color: #8b7355; margin-bottom: 10px;">${title}</h1>
-                        <p style="color: #a0845c; font-style: italic;">Thể loại: ${categoryNames[category] || 'Chưa chọn'}</p>
-                    </div>
-                    <div style="line-height: 1.8; color: #4a3c2a;">${content || '<p style="color: #aaa;">Chưa có nội dung...</p>'}</div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
         async function publishStory() {
     const title = document.getElementById('storyTitle').value.trim();
     const content = document.getElementById('storyEditor').innerHTML.trim();
