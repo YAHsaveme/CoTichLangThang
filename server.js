@@ -188,6 +188,5 @@ app.get("/", (req, res) => {
   res.redirect("/home.html");
 });
 
-console.log("body:", req.body);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`🚀 Server chạy tại http://localhost:${port}`));
