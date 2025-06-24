@@ -39,6 +39,9 @@
       margin: 10px 0;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    .content video {
+      display: block;
+    }
     .buttons {
       margin-top: 40px;
       display: flex;
@@ -108,96 +111,92 @@
   </div>
 
   <script>
-    document.getElementById('storyContent').innerHTML = story.content;
     const storyId = localStorage.getItem("selectedStoryId");
 
-if (!storyId) {
-  document.body.innerHTML = `
-    <p class="message">❌ Không tìm thấy truyện. Vui lòng quay lại trang chủ.</p>
-    <div class="buttons">
-      <a href="home.html" class="btn btn-home">🏠 Trang Chủ</a>
-    </div>`;
-} else {
-  fetch(`/api/story/${storyId}`)
-    .then(res => res.json())
-    .then(story => {
-      if (!story) {
-        document.body.innerHTML = `
-          <p class="message">❌ Không tìm thấy truyện trong hệ thống.</p>
-          <div class="buttons">
-            <a href="home.html" class="btn btn-home">🏠 Trang Chủ</a>
-          </div>`;
-        return;
-      }
+    if (!storyId) {
+      document.body.innerHTML = `
+        <p class="message">❌ Không tìm thấy truyện. Vui lòng quay lại trang chủ.</p>
+        <div class="buttons">
+          <a href="home.html" class="btn btn-home">🏠 Trang Chủ</a>
+        </div>`;
+    } else {
+      fetch(`/api/story/${storyId}`)
+        .then(res => res.json())
+        .then(story => {
+          if (!story) {
+            document.body.innerHTML = `
+              <p class="message">❌ Không tìm thấy truyện trong hệ thống.</p>
+              <div class="buttons">
+                <a href="home.html" class="btn btn-home">🏠 Trang Chủ</a>
+              </div>`;
+            return;
+          }
 
-      document.getElementById("storyTitle").textContent = story.title;
-      document.getElementById("storyContent").innerHTML = story.content;
-      document.getElementById("storyViews").textContent = story.views;
+          document.getElementById("storyTitle").textContent = story.title;
+          document.getElementById("storyContent").innerHTML = story.content;
+          document.getElementById("storyViews").textContent = story.views || 0;
 
+          // Tăng lượt xem
+          fetch(`/api/views/${story.id}`, { method: "PUT" });
+
+          localStorage.setItem("selectedStory", JSON.stringify(story));
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Lỗi khi tải truyện.");
+        });
+    }
+
+    function deleteStory() {
+      const story = JSON.parse(localStorage.getItem("selectedStory"));
+      if (!story || !confirm("❌ Bạn có chắc muốn xóa truyện này không?")) return;
+
+      fetch(`/api/story/${story.id}`, { method: "DELETE" })
+        .then(res => {
+          if (res.ok) {
+            alert("✅ Đã xoá truyện!");
+            window.location.href = "home.html";
+          } else {
+            alert("❌ Không thể xoá truyện.");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Lỗi xoá truyện.");
+        });
+    }
+
+    function editStory() {
+      const story = JSON.parse(localStorage.getItem("selectedStory"));
+      if (!story) return;
+      localStorage.setItem("editStoryId", story.id);
       localStorage.setItem("selectedStory", JSON.stringify(story));
+      window.location.href = 'create.html';
+    }
 
-      // Tăng lượt xem
-      fetch(`/api/views/${story.id}`, { method: "PUT" });
+    function suggestNewStory() {
+      fetch("/api/stories")
+        .then(res => res.json())
+        .then(stories => {
+          const currentId = localStorage.getItem("selectedStoryId");
+          const otherStories = stories.filter(s => s.id !== currentId);
 
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Lỗi khi tải truyện.");
-    });
-}
+          if (otherStories.length === 0) {
+            alert("📚 Hiện bạn chỉ có một truyện, không còn truyện nào khác để đề xuất!");
+            return;
+          }
 
-// Xoá truyện
-function deleteStory() {
-  const story = JSON.parse(localStorage.getItem("selectedStory"));
-  if (!story || !confirm("❌ Bạn có chắc muốn xóa truyện này không?")) return;
+          const randomIndex = Math.floor(Math.random() * otherStories.length);
+          const suggested = otherStories[randomIndex];
 
-  fetch(`/api/story/${story.id}`, { method: "DELETE" })
-    .then(res => {
-      if (res.ok) {
-        alert("✅ Đã xoá truyện!");
-        window.location.href = "home.html";
-      } else {
-        alert("❌ Không thể xoá truyện.");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Lỗi xoá truyện.");
-    });
-}
-
-// Sửa truyện
-function editStory() {
-  const story = JSON.parse(localStorage.getItem("selectedStory"));
-  if (!story) return;
-  localStorage.setItem("editStoryId", story.id);
-  window.location.href = 'create.html';
-}
-
-// Gợi ý truyện ngẫu nhiên (gọi lại API /api/stories)
-function suggestNewStory() {
-  fetch("/api/stories")
-    .then(res => res.json())
-    .then(stories => {
-      const currentId = localStorage.getItem("selectedStoryId");
-      const otherStories = stories.filter(s => s.id !== currentId);
-
-      if (otherStories.length === 0) {
-        alert("📚 Hiện bạn chỉ có một truyện, không còn truyện nào khác để đề xuất!");
-        return;
-      }
-
-      const randomIndex = Math.floor(Math.random() * otherStories.length);
-      const suggested = otherStories[randomIndex];
-
-      localStorage.setItem("selectedStoryId", suggested.id);
-      location.reload();
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Không thể gợi ý truyện mới.");
-    });
-}
+          localStorage.setItem("selectedStoryId", suggested.id);
+          location.reload();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Không thể gợi ý truyện mới.");
+        });
+    }
   </script>
 </body>
 </html>

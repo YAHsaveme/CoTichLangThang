@@ -66,22 +66,25 @@ app.get("/api/stories", async (req, res) => {
 
 // POST đăng truyện mới
     app.post("/api/stories", upload.none(), async (req, res) => {
+  try {
+    console.log("body:", req.body); // debug
+
     const { title, content, iconPath } = req.body;
     const id = uuidv4();
 
-    try {
-        const pool = await sql.connect(config);
-        await pool.request()
-            .input("id", sql.UniqueIdentifier, id)
-            .input("title", sql.NVarChar(100), title)
-            .input("content", sql.NVarChar(sql.MAX), content)
-            .input("iconPath", sql.NVarChar(255), iconPath)
-            .query("INSERT INTO Stories (id, title, content, iconPath) VALUES (@id, @title, @content, @iconPath)");
-        res.json({ success: true, id });
-    } catch (err) {
-  console.error("❌ Lỗi khi lưu truyện:", err); // In log chi tiết ra Render
-  res.status(500).json({ error: "Lỗi khi lưu truyện" });
-}
+    const pool = await sql.connect(config);
+    await pool.request()
+      .input("id", sql.UniqueIdentifier, id)
+      .input("title", sql.NVarChar(100), title)
+      .input("content", sql.NVarChar(sql.MAX), content)
+      .input("iconPath", sql.NVarChar(255), iconPath || null)
+      .query("INSERT INTO Stories (id, title, content, iconPath) VALUES (@id, @title, @content, @iconPath)");
+
+    res.json({ success: true, id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Lỗi khi lưu truyện" });
+  }
 });
 
 // GET truyện theo ID
@@ -188,6 +191,5 @@ app.get("/", (req, res) => {
   res.redirect("/home.html");
 });
 
-console.log("body:", req.body);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`🚀 Server chạy tại http://localhost:${port}`));
