@@ -78,7 +78,7 @@ app.post("/api/stories", upload.single("icon"), async (req, res) => {
             .query("INSERT INTO Stories (id, title, content, iconPath) VALUES (@id, @title, @content, @iconPath)");
         res.json({ success: true, id });
     } catch (err) {
-        console.error(err);
+        console.error("❌ Lỗi khi lưu truyện:", err); // In log chi tiết ra Render
         res.status(500).json({ error: "Lỗi khi lưu truyện" });
     }
 });
