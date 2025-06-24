@@ -6,19 +6,37 @@ const cors = require("cors");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+// Multer Cloudinary storage hỗ trợ image + video
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const resource_type = file.mimetype.startsWith("video") ? "video" : "image";
+    return {
+      folder: "cotichlangthang",
+      resource_type: resource_type,
+      public_id: file.originalname.split(".")[0] + "-" + Date.now(),
+    };
+  },
+});
+
+const upload = multer({ storage });
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static("public"));
-
-// Multer upload setup
-const storage = multer.diskStorage({
-    destination: "./uploads/",
-    filename: (_, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-});
-const upload = multer({ storage });
 
 // SQL Config
 const config = {
@@ -47,7 +65,7 @@ app.get("/api/stories", async (req, res) => {
 // POST đăng truyện mới
 app.post("/api/stories", upload.single("icon"), async (req, res) => {
     const { title, content } = req.body;
-    const iconPath = req.file ? "/uploads/" + req.file.filename : null;
+    const iconPath = req.file ? req.file.path : null;
     const id = uuidv4();
 
     try {
@@ -96,7 +114,7 @@ app.delete("/api/story/:id", async (req, res) => {
 app.put("/api/stories/:id", upload.single("icon"), async (req, res) => {
   const { title, content } = req.body;
   const id = req.params.id;
-  const iconPath = req.file ? "/uploads/" + req.file.filename : null;
+  const iconPath = req.file ? req.file.path : null;
 
   try {
     const pool = await sql.connect(config);
