@@ -108,6 +108,7 @@
   </div>
 
   <script>
+    document.getElementById('storyContent').innerHTML = story.content;
     const storyId = localStorage.getItem("selectedStoryId");
 
 if (!storyId) {

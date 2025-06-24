@@ -1440,6 +1440,21 @@ function stripHTML(html) {
     div.innerHTML = html;
     return div.textContent || div.innerText || "";
 }
+
+let icon;
+if (story.iconPath?.match(/\.(mp4|webm|mov)$/i)) {
+  icon = document.createElement("video");
+  icon.src = story.iconPath;
+  icon.controls = true;
+  icon.muted = true;
+  icon.autoplay = true;
+  icon.loop = true;
+} else {
+  icon = document.createElement("img");
+  icon.src = story.iconPath;
+}
+container.appendChild(icon);
+
     </script>
 </body>
 </html>

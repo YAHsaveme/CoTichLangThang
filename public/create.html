@@ -534,17 +534,29 @@ if (editId) {
             });
         }
 
-        function handleFiles(files) {
-            for (let file of files) {
-                if (file.size > 50 * 1024 * 1024) {
-                    alert(`File "${file.name}" quá lớn! Vui lòng chọn file nhỏ hơn 50MB.`);
-                    continue;
-                }
-                if (file.type.startsWith('image/')) insertImageFromFile(file);
-                else if (file.type.startsWith('video/')) insertVideoFromFile(file);
-                else alert(`File "${file.name}" không được hỗ trợ!`);
-            }
-        }
+        async function handleFiles(files) {
+  for (let file of files) {
+    if (file.size > 50 * 1024 * 1024) {
+      alert(`❌ File "${file.name}" quá lớn!`);
+      continue;
+    }
+
+    const url = await uploadToCloudinary(file);
+
+    if (file.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.className = 'editor-image';
+      insertElement(img);
+    } else if (file.type.startsWith('video/')) {
+      const video = document.createElement('video');
+      video.src = url;
+      video.controls = true;
+      video.className = 'editor-video';
+      insertElement(video);
+    }
+  }
+}
 
         function insertImageFromFile(file) {
             const reader = new FileReader();
@@ -747,6 +759,23 @@ const res = await fetch(url, {
     btn.disabled = false;
     btn.innerHTML = '🚀 Đăng tải truyện';
 }
+}
+
+const CLOUD_NAME = "dbvdjqeke";
+const UPLOAD_PRESET = "cotich_preset"; // đã tạo trong Cloudinary
+
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  return data.secure_url;
 }
     </script>
 </body>
