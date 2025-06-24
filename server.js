@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => {
     const resource_type = file.mimetype.startsWith("video") ? "video" : "image";
     return {
-      folder: "cotichlangthang",
+      folder: "cotichlangthang/",
       resource_type: resource_type,
       public_id: file.originalname.split(".")[0] + "-" + Date.now(),
     };
