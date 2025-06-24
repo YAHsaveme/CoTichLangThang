@@ -155,7 +155,7 @@ app.put("/api/views/:id", async (req, res) => {
 // POST bình luận
 app.post("/api/comments", upload.single("avatar"), async (req, res) => {
     const { name, content } = req.body;
-    const avatarPath = req.file ? "/uploads/" + req.file.filename : null;
+    const avatarPath = req.file ? req.file.path : null; // Cloudinary path
     const id = uuidv4();
 
     try {
