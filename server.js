@@ -32,6 +32,8 @@ const upload = multer({ storage });
 
 
 const app = express();
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -64,8 +66,7 @@ app.get("/api/stories", async (req, res) => {
 
 // POST đăng truyện mới
 app.post("/api/stories", upload.single("icon"), async (req, res) => {
-    const { title, content } = req.body;
-    const iconPath = req.file ? req.file.path : null;
+    const { title, content, iconPath } = req.body;
     const id = uuidv4();
 
     try {
@@ -78,9 +79,9 @@ app.post("/api/stories", upload.single("icon"), async (req, res) => {
             .query("INSERT INTO Stories (id, title, content, iconPath) VALUES (@id, @title, @content, @iconPath)");
         res.json({ success: true, id });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Lỗi khi lưu truyện" });
-    }
+  console.error("❌ Lỗi khi lưu truyện:", err); // In log chi tiết ra Render
+  res.status(500).json({ error: "Lỗi khi lưu truyện" });
+}
 });
 
 // GET truyện theo ID
