@@ -558,29 +558,23 @@ if (editId) {
   }
 }
 
-        function insertImageFromFile(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'editor-image';
-                img.alt = file.name;
-                insertElement(img);
-            };
-            reader.readAsDataURL(file);
-        }
+            async function insertImageFromFile(file) {
+  const url = await uploadToCloudinary(file); // ✅ trả về link Cloudinary
+  const img = document.createElement("img");
+  img.src = url;
+  img.className = 'editor-image';
+  insertElement(img);
+}
 
-        function insertVideoFromFile(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const video = document.createElement('video');
-                video.src = e.target.result;
-                video.className = 'editor-video';
-                video.controls = true;
-                insertElement(video);
-            };
-            reader.readAsDataURL(file);
-        }
+        async function insertVideoFromFile(file) {
+  const url = await uploadToCloudinary(file);
+  const video = document.createElement("video");
+  video.src = url;
+  video.controls = true;
+  video.className = 'editor-video';
+  insertElement(video);
+}
+
 
         function insertElement(element) {
             const editor = document.getElementById('storyEditor');

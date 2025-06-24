@@ -65,7 +65,7 @@ app.get("/api/stories", async (req, res) => {
 });
 
 // POST đăng truyện mới
-app.post("/api/stories", upload.single("icon"), async (req, res) => {
+    app.post("/api/stories", async (req, res) => {
     const { title, content, iconPath } = req.body;
     const id = uuidv4();
 
@@ -82,10 +82,6 @@ app.post("/api/stories", upload.single("icon"), async (req, res) => {
   console.error("❌ Lỗi khi lưu truyện:", err); // In log chi tiết ra Render
   res.status(500).json({ error: "Lỗi khi lưu truyện" });
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 22dd1e90f813b77c7cda38329145b4d3cd7fe1ee
 });
 
 // GET truyện theo ID
