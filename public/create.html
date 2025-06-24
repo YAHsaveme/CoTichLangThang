@@ -558,21 +558,31 @@ if (editId) {
   }
 }
 
-            async function insertImageFromFile(file) {
-  const url = await uploadToCloudinary(file); // ✅ trả về link Cloudinary
-  const img = document.createElement("img");
-  img.src = url;
-  img.className = 'editor-image';
-  insertElement(img);
+        async function insertImageFromFile(file) {
+  try {
+    const url = await uploadToCloudinary(file);
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = 'editor-image';
+    insertElement(img);
+  } catch (err) {
+    alert("❌ Không thể upload ảnh lên Cloudinary.");
+    console.error(err);
+  }
 }
 
         async function insertVideoFromFile(file) {
-  const url = await uploadToCloudinary(file);
-  const video = document.createElement("video");
-  video.src = url;
-  video.controls = true;
-  video.className = 'editor-video';
-  insertElement(video);
+  try {
+    const url = await uploadToCloudinary(file);
+    const video = document.createElement("video");
+    video.src = url;
+    video.controls = true;
+    video.className = 'editor-video';
+    insertElement(video);
+  } catch (err) {
+    alert("❌ Không thể upload video lên Cloudinary.");
+    console.error(err);
+  }
 }
 
         function insertElement(element) {
@@ -763,19 +773,19 @@ const UPLOAD_PRESET = "cotich_preset";
 
 // Hàm upload file lên Cloudinary
 async function uploadToCloudinary(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
 
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
-        method: "POST",
-        body: formData
-    });
+  const endpoint = file.type.startsWith("video/") ? "video" : "image";
 
-    if (!res.ok) throw new Error("❌ Upload lên Cloudinary thất bại");
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${endpoint}/upload`, {
+    method: "POST",
+    body: formData,
+  });
 
-    const data = await res.json();
-    return data.secure_url; // Trả về đường dẫn vĩnh viễn
+  const data = await res.json();
+  return data.secure_url; // Trả về URL công khai
 }
     </script>
 </body>
