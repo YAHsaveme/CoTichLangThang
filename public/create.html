@@ -494,16 +494,16 @@ if (editId) {
                 });
             });
 
-            editor.addEventListener('paste', (e) => {
-                const items = e.clipboardData.items;
-                for (let item of items) {
-                    if (item.type.indexOf('image') !== -1) {
-                        e.preventDefault();
-                        const file = item.getAsFile();
-                        insertImageFromFile(file);
-                    }
-                }
-            });
+            editor.addEventListener('paste', async (e) => {
+  for (const item of e.clipboardData.items) {
+    if (item.kind === 'file') {
+      e.preventDefault();
+      const file = item.getAsFile();
+      const url = await uploadToCloudinary(file);
+      insertMediaToEditor(url, file.type);
+    }
+  }
+});
 
             uploadZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -717,14 +717,15 @@ if (editId) {
     btn.disabled = true;
     btn.innerHTML = '🚀 Đang đăng...';
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append("iconPath", iconUrl); // ✅ gửi URL đã upload vào database
     let iconUrl = null;
-    if (iconFile) {
-    iconUrl = await uploadToCloudinary(iconFile); // ✅ Upload icon lên cloud
+if (iconFile) {
+    iconUrl = await uploadToCloudinary(iconFile); // ✅ Upload icon lên Cloudinary
 }
+
+const formData = new FormData();
+formData.append('title', title);
+formData.append('content', content);
+formData.append("iconPath", iconUrl); // ✅ Gửi URL icon đã upload
     try {
     let url = '/api/stories';
 let method = 'POST';
