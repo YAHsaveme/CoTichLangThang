@@ -65,7 +65,7 @@ app.get("/api/stories", async (req, res) => {
 });
 
 // POST đăng truyện mới
-    app.post("/api/stories", async (req, res) => {
+    app.post("/api/stories", upload.none(), async (req, res) => {
     const { title, content, iconPath } = req.body;
     const id = uuidv4();
 
@@ -188,5 +188,6 @@ app.get("/", (req, res) => {
   res.redirect("/home.html");
 });
 
+console.log("body:", req.body);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`🚀 Server chạy tại http://localhost:${port}`));
